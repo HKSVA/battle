@@ -24,7 +24,7 @@ The Apps Script and spreadsheet time zones must both be `Asia/Hong_Kong`.
 
 - `Registrations` contains the exact 36-column schema defined in `Core.gs`.
 - `MMO Catalog` maps each genre, song, artist and key to one Drive File ID. Staff must verify the actual audio before checking `Approved`.
-- The current SOUL and ROCK rows remain unapproved until their exact files are verified. Email 2 fails closed if either approved mapping is missing or wrong.
+- All 12 current SOUL and ROCK rows were matched to their supplied Drive files and approved in `MMO Catalog` on 25 September 2026. Email 2 still fails closed if either approved mapping is later missing or changed.
 
 ## Deployment
 
@@ -36,5 +36,6 @@ The Apps Script and spreadsheet time zones must both be `Asia/Hong_Kong`.
 6. Verify payment manually, supply and approve both exact MMO File IDs, then run `SEND CONFIRMATION` and verify Email 2.
 7. Confirm a second click does not send Email 2 again. Only after all checks pass should the production frontend be published with registration enabled.
 
-The web app does not use an unrestricted `onEdit` email trigger. Staff must deliberately choose `SEND CONFIRMATION`; the code rechecks `VERIFIED`, `SUBMITTED`, Email 1 state and the two approved MMO mappings under a server-side lock.
+Production Web app endpoint: `https://script.google.com/macros/s/AKfycbxEh-L38sjD66KwEYQ2FQGfNxNWz1dCW1lOXsJrhMHqF14liStlugPhHn2tETuigCD6/exec`
 
+The web app does not use an unrestricted `onEdit` email trigger. Staff must deliberately choose `SEND CONFIRMATION`; the code rechecks `VERIFIED`, `SUBMITTED`, Email 1 state and the two approved MMO mappings under a server-side lock.
