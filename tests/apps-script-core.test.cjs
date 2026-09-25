@@ -27,7 +27,7 @@ assert.deepEqual(Array.from(normalized.soul), ['你瞞我瞞', '陳柏宇']);
 assert.throws(() => context.validRegistration_({...valid, statement: '字'.repeat(21)}), /最多20字/);
 assert.throws(() => context.validRegistration_({...valid, rock: '《不存在》 — 測試'}), /指定歌單/);
 assert.throws(() => context.validRegistration_({...valid, rock: '《娛樂人生》 — 陳蕾'}), /指定歌單/);
-assert.equal(context.validRegistration_({...valid, rock: '《沙門》 — 陳蕾'}).rock[0], '沙門');
+assert.equal(context.validRegistration_({...valid, rock: '《娑婆》 — 陳蕾'}).rock[0], '娑婆');
 assert.throws(() => context.validRegistration_({...valid, privacyConsent: false}), /必需條款/);
 
 const activeRows = Array.from({length: 40}, (_, i) => ({

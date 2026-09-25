@@ -3,7 +3,7 @@ const CB = {
   capacity: 40, maxFile: 10 * 1024 * 1024,
   sessions: ['17 OCT · 1:00–4:00PM','17 OCT · 6:00–9:00PM','18 OCT · 1:00–4:00PM','18 OCT · 6:00–9:00PM','19 OCT · 1:00–4:00PM','19 OCT · 6:00–9:00PM'],
   soul: [['你瞞我瞞','陳柏宇'],['今天我不想做嘢','張進翹'],['騷靈情歌','張敬軒'],['Superman','AGA'],['趁你旅行時搬走','Moon Tang'],['多得他','王菲']],
-  rock: [['懷疑人生','MC 張天賦'],['我的天我的歌','許志安'],['用背脊唱情歌','Gareth.T'],['沙門','陳蕾'],['穿花蝴蝶','衛蘭'],['讓我跟你走','彭羚']],
+  rock: [['懷疑人生','MC 張天賦'],['我的天我的歌','許志安'],['用背脊唱情歌','Gareth.T'],['娑婆','陳蕾'],['穿花蝴蝶','衛蘭'],['讓我跟你走','彭羚']],
   headers: ['Registration ID','Submitted At','Name EN','Name ZH','Email','Phone','Instagram','Session','Soul Song','Soul Artist','Rock Song','Rock Artist','Contestant Photo File ID','Contestant Photo URL','Payment Method','Payment Proof File ID','Payment Proof URL','Payment Status','Registration Status','Contestant Card Sent At','Confirmation Sent At','Soul MMO File ID','Rock MMO File ID','Transpose Request','Internal Notes','Request ID','Receipt Secret Hash','Contestant Card File ID','Email 1 State','Email 2 State','Marketing Consent','Competition Consent','Privacy Consent','Media Consent','Personal Statement','Consent Version']
 };
 function fail_(code,message){const e=new Error(message);e.code=code;throw e;}

@@ -5,7 +5,7 @@ function rows_(s){if(s.getLastRow()<2)return[];return s.getRange(2,1,s.getLastRo
 function put_(s,r,key,value){s.getRange(r._row,CB.headers.indexOf(key)+1).setValue(sheetText_(value));r[key]=value;}
 function hash_(s){return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256,s).map(b=>('0'+((b+256)%256).toString(16)).slice(-2)).join('');}
 function locked_(fn){const l=LockService.getScriptLock();if(!l.tryLock(25000))fail_('BUSY','系統忙碌，請稍後重試。');try{return fn();}finally{l.releaseLock();}}
-function open_(){const c=cfg_();if(c.REGISTRATION_ENABLED!=='true'||!Number.isFinite(Date.parse(c.OPEN_AT))||Date.now()<Date.parse(c.OPEN_AT))fail_('CLOSED','報名尚未開放。');}
+function open_(){const c=cfg_();if(c.REGISTRATION_ENABLED!=='true'||!Number.isFinite(Date.parse(c.OPEN_AT))||Date.now()<Date.parse(c.OPEN_AT))fail_('CLOSED','暫時未能接受報名，請稍後再試。');}
 function json_(v){return ContentService.createTextOutput(JSON.stringify(v)).setMimeType(ContentService.MimeType.JSON);}
 function response_(fn){try{return json_({ok:true,...fn()});}catch(e){return json_({ok:false,code:e.code||'SERVICE_ERROR',message:e.code?e.message:'未能完成操作，請稍後重試或聯絡主辦單位。'});}}
 function doGet(){return response_(()=>{open_();return {sessions:availability_(rows_(sheet_()))};});}
