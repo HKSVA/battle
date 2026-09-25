@@ -330,7 +330,7 @@ body{font-weight:400}
       if(!state.photoUrl&&!fields.photo.files.length)throw new Error('請重新選擇參賽相片，繼續製作選手卡。');
       state.registrationId=request.registrationId;await renderCard();
       const result=await api('complete',{requestId:request.requestId,receiptSecret:request.receiptSecret,card:{mime:'image/png',base64:$('#card-canvas').toDataURL('image/png').split(',')[1]}});
-      if(!result.submitted)throw new Error('未能確認提交結果，請聯絡主辦單位。');
+      if(!(result.submitted||(result.registrationId===request.registrationId&&result.email1State==='SENT')))throw new Error('未能確認提交結果，請聯絡主辦單位。');
       request.email1State='SENT';saveReceipt();
       $('#submitted').innerHTML=[['Registration ID',request.registrationId],['參與場次',request.session],['付款狀態','PENDING'],['報名狀態','SUBMITTED']].map(([k,v])=>`<div><small>${escapeHtml(k)}</small><br><strong>${escapeHtml(v)}</strong></div>`).join('');
       status.textContent='已收到你的報名資料及付款紀錄。請查收電郵，名額仍待工作人員核實。';$('#success').classList.add('show');$('#success').scrollIntoView({behavior:'smooth',block:'start'});
