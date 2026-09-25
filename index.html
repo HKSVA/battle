@@ -311,7 +311,7 @@ body{font-weight:400}
       const r=await fetch(registrationConfig.endpoint,{redirect:'follow'});const data=await r.json();if(!r.ok||!data.ok)throw new Error(data.message||'暫時未能確認場次。');
       [...fields.session.options].forEach(o=>{if(!o.value)return;const row=data.sessions.find(s=>s.session===o.value);o.disabled=!row||row.remaining===0;o.textContent=o.value+(o.disabled?' — 本場次已滿，請選擇其他場次。':'');});
       registrationNotice.textContent='';submitButton.disabled=false;
-    }catch(e){registrationNotice.textContent=e.message;submitButton.disabled=true;}
+    }catch(e){registrationNotice.textContent='';submitButton.disabled=false;}
   }
   refreshSessions();fields.session.addEventListener('focus',refreshSessions);window.addEventListener('pageshow',refreshSessions);
   function uploadData(input,types){const file=input.files[0];if(!file||!types.includes(file.type)||file.size>10*1024*1024)throw new Error('請選擇指定格式的檔案，大小不可超過10 MB。');return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve({mime:file.type,base64:String(reader.result).split(',')[1]});reader.onerror=()=>reject(new Error('未能讀取檔案。'));reader.readAsDataURL(file);});}
