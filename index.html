@@ -300,10 +300,22 @@ body{font-weight:400}
   const registrationNotice=document.createElement('p');registrationNotice.id='registration-notice';registrationNotice.setAttribute('role','status');$('.payment',form).before(registrationNotice);
   async function api(action,data={}) {
     if(!apiReady()) throw new Error('暫時未能連接報名服務，請稍後再試。');
-    const response=await fetch(registrationConfig.endpoint,{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,...data})});
-    if(!response.ok)throw new Error('未能連接報名服務。請保留此頁面稍後重試。');
-    let result;try{result=await response.json();}catch(_){throw new Error('未能確認提交結果，請保留此頁面並聯絡主辦單位。');}
-    if(!result.ok){const error=new Error(result.message||'未能完成提交。');error.code=result.code;throw error;}return result;
+    const options={method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,...data})};
+    let lastError;
+    for(let attempt=0;attempt<2;attempt++){
+      try{
+        const response=await fetch(registrationConfig.endpoint,options);
+        if(!response.ok)throw new Error('未能連接報名服務。請保留此頁面稍後重試。');
+        let result;try{result=await response.json();}catch(_){throw new Error('未能確認提交結果，請保留此頁面並聯絡主辦單位。');}
+        if(!result.ok){const error=new Error(result.message||'未能完成提交。');error.code=result.code;throw error;}
+        return result;
+      }catch(error){
+        if(error.code)throw error;
+        lastError=error;
+        if(attempt===0)await new Promise(resolve=>setTimeout(resolve,1200));
+      }
+    }
+    throw lastError;
   }
   async function refreshSessions(){
     if(!apiReady()){registrationNotice.textContent='';submitButton.disabled=true;return;}
