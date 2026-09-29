@@ -61,9 +61,10 @@ function sendOnce_(s,r,n,attachments){
  if(r[state]!=='READY')fail_('EMAIL_REVIEW','電郵正在處理或結果未明；請先核對寄件紀錄，勿重寄。');
  if(MailApp.getRemainingDailyQuota()<1)fail_('MAIL_QUOTA','寄信配額不足，請稍後重試。');
  const size=attachments.reduce((sum,b)=>sum+b.getBytes().length,0);if(size>24*1024*1024)fail_('ATTACHMENT_SIZE','附件總大小超過24 MB，請先調整 MMO 檔案。');
+ const mailRow=n===2?withMmoContent_(r):r;
  put_(s,r,state,'SENDING');if(n===2)put_(s,r,'Registration Status','CONFIRMED');SpreadsheetApp.flush();
  try{
-  MailApp.sendEmail({to:String(r.Email).replace(/^'/,''),subject:n===1?'【廣東歌唱擂台 2026】已收到你的報名資料｜Registration Received':'【廣東歌唱擂台 2026】參賽名額確認｜Registration Confirmed',body:n===1?email1_(r):email2_(r),attachments,name:'CANTOPOP BATTLE',replyTo:cfg_().REPLY_TO});
+  MailApp.sendEmail({to:String(r.Email).replace(/^'/,''),subject:n===1?'【廣東歌唱擂台 2026】已收到你的報名資料｜Registration Received':'【廣東歌唱擂台 2026】參賽名額確認｜Registration Confirmed',body:n===1?email1_(mailRow):email2_(mailRow),attachments,name:'CANTOPOP BATTLE',replyTo:cfg_().REPLY_TO});
   put_(s,r,date,new Date());put_(s,r,state,'SENT');SpreadsheetApp.flush();
  }catch(e){try{put_(s,r,state,'UNCERTAIN');SpreadsheetApp.flush();}catch(_){}fail_('EMAIL_REVIEW','寄信結果待工作人員核查，系統不會自動重寄。');}
 }
@@ -86,7 +87,9 @@ function setup(){
 }
 function checkConfiguration(){staff_();const c=cfg_();sheet_();[c.PHOTO_FOLDER_ID,c.PAYMENT_FOLDER_ID,c.MMO_FOLDER_ID].forEach(id=>DriveApp.getFolderById(id).getName());SpreadsheetApp.getUi().alert('設定及資料夾可存取。今日剩餘寄信名額：'+MailApp.getRemainingDailyQuota());}
 
-function catalog_(){const s=SpreadsheetApp.openById(cfg_().SPREADSHEET_ID).getSheetByName('MMO Catalog');if(!s||s.getLastRow()<2)return[];return s.getRange(2,1,s.getLastRow()-1,6).getValues().filter(r=>r[5]===true||r[5]==='TRUE');}
+function catalog_(){const s=SpreadsheetApp.openById(cfg_().SPREADSHEET_ID).getSheetByName('MMO Catalog');if(!s||s.getLastRow()<2)return[];return s.getRange(2,1,s.getLastRow()-1,8).getValues().filter(r=>r[5]===true||r[5]==='TRUE');}
 function catalogId_(genre,song,artist,key){const r=catalog_().filter(r=>r[0]===genre&&r[1]===song&&r[2]===artist&&r[3]===key);return r.length===1?r[0][4]:'';}
 function assertMmoMatch_(r){['Soul','Rock'].forEach(g=>{const fileId=r[g+' MMO File ID'];const matches=catalog_().filter(x=>x[0]===g.toUpperCase()&&x[1]===r[g+' Song']&&x[2]===r[g+' Artist']&&x[4]===fileId);if(matches.length!==1)fail_('MMO','MMO 未有核准的歌曲對應；請先檢查 MMO Catalog。');});}
-function setupMmoCatalog(){staff_();const ss=SpreadsheetApp.openById(cfg_().SPREADSHEET_ID);if(ss.getSheetByName('MMO Catalog'))return;const s=ss.insertSheet('MMO Catalog');s.appendRow(['Genre','Song','Artist','Key','File ID','Approved']);const rows=['soul','rock'].flatMap(g=>CB[g].map(p=>[g.toUpperCase(),p[0],p[1],'KEY0','',false]));s.getRange(2,1,rows.length,6).setValues(rows);s.getRange(2,6,rows.length,1).insertCheckboxes();s.setFrozenRows(1);}
+function withMmoContent_(r){const out=Object.assign({},r);['Soul','Rock'].forEach(g=>{const row=catalog_().find(x=>x[0]===g.toUpperCase()&&x[1]===r[g+' Song']&&x[2]===r[g+' Artist']&&x[4]===r[g+' MMO File ID']);if(!row)fail_('MMO','MMO 未有核准的歌曲對應；請先檢查 MMO Catalog。');out[g+' Excerpt Timestamp']=String(row[6]||'').trim();out[g+' Excerpt Lyrics']=String(row[7]||'').trim();if(!out[g+' Excerpt Timestamp']||!out[g+' Excerpt Lyrics'])fail_('MMO_CONTENT','指定歌曲的時間碼或歌詞尚未設定。');});return out;}
+function ensureMmoCatalogColumns_(s){const headers=['Genre','Song','Artist','Key','File ID','Approved','Excerpt Timestamp','Excerpt Lyrics'];s.getRange(1,1,1,headers.length).setValues([headers]);s.setFrozenRows(1);}
+function setupMmoCatalog(){staff_();const ss=SpreadsheetApp.openById(cfg_().SPREADSHEET_ID);let s=ss.getSheetByName('MMO Catalog');if(s){ensureMmoCatalogColumns_(s);return;}s=ss.insertSheet('MMO Catalog');ensureMmoCatalogColumns_(s);const rows=['soul','rock'].flatMap(g=>CB[g].map(p=>[g.toUpperCase(),p[0],p[1],'KEY0','',false,'','']));s.getRange(2,1,rows.length,8).setValues(rows);s.getRange(2,6,rows.length,1).insertCheckboxes();}

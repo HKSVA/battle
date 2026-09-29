@@ -48,12 +48,19 @@ assert.equal(context.signature_([0, 1, 2], 'image/jpeg'), false);
 const row = {
   'Name ZH': '測試歌手', 'Registration ID': 'CB26-0001', Session: valid.session,
   'Soul Song': '你瞞我瞞', 'Soul Artist': '陳柏宇',
-  'Rock Song': '懷疑人生', 'Rock Artist': 'MC 張天賦'
+  'Rock Song': '懷疑人生', 'Rock Artist': 'MC 張天賦',
+  'Soul Excerpt Timestamp': '0:10–1:40', 'Soul Excerpt Lyrics': 'SOUL 測試指定歌詞',
+  'Rock Excerpt Timestamp': '2:01–2:40 ・ 3:33–4:22', 'Rock Excerpt Lyrics': 'ROCK 測試指定歌詞'
 };
 assert.match(context.email1_(row), /已收到你的.*報名資料及付款紀錄/);
 assert.doesNotMatch(context.email1_(row), /名額現已確認/);
 assert.match(context.email2_(row), /THE TWINS 雙子匯 2期三道 G\/F 中庭/);
 assert.match(context.email2_(row), /2026年10月7日/);
+assert.match(context.email2_(row), /指定選段：\n0:10–1:40\n\nSOUL 測試指定歌詞/);
+assert.match(context.email2_(row), /指定選段：\n2:01–2:40 ・ 3:33–4:22\n\nROCK 測試指定歌詞/);
+assert.match(context.email2_(row), /-----------------------/);
+assert.throws(() => context.email2_({...row, 'Rock Excerpt Lyrics': ''}), /時間碼或歌詞尚未設定/);
+assert.equal(context.excerptText_('2:01-2:40 · 3:33-4:22'), '2:01–2:40 ・ 3:33–4:22');
 assert.equal(context.checkIn_(valid.session), '12:30PM 前');
 assert.equal(context.checkIn_('17 OCT · 6:00–9:00PM'), '5:30PM 前');
 

@@ -23,7 +23,7 @@ The Apps Script and spreadsheet time zones must both be `Asia/Hong_Kong`.
 ## Sheet tabs
 
 - `Registrations` contains the exact 36-column schema defined in `Core.gs`.
-- `MMO Catalog` maps each genre, song, artist and key to one Drive File ID. Staff must verify the actual audio before checking `Approved`.
+- `MMO Catalog` maps each genre, song, artist and key to one Drive File ID, plus the official `Excerpt Timestamp` and complete `Excerpt Lyrics`. Staff must verify the actual audio and both content fields before checking `Approved`.
 - All 12 current SOUL and ROCK rows were matched to their supplied Drive files and approved in `MMO Catalog` on 25 September 2026. Email 2 still fails closed if either approved mapping is later missing or changed.
 
 ## Deployment
@@ -33,8 +33,9 @@ The Apps Script and spreadsheet time zones must both be `Asia/Hong_Kong`.
 3. Deploy as a Web app, executing as the project owner, with access limited to the audience required for public registration.
 4. Copy the `/exec` URL into `public/registration-config.js` and set `enabled: true` only for controlled QA.
 5. Complete one realistic registration, verify Drive files, row statuses, Email 1 and card attachment.
-6. Verify payment manually, supply and approve both exact MMO File IDs, then run `SEND CONFIRMATION` and verify Email 2.
-7. Confirm a second click does not send Email 2 again. Only after all checks pass should the production frontend be published with registration enabled.
+6. Run `setupMmoCatalog` once after this update to add the `Excerpt Timestamp` and `Excerpt Lyrics` columns to an existing catalog. Enter the official timestamp and complete excerpt lyrics for all approved songs.
+7. Verify payment manually, supply and approve both exact MMO File IDs, then run `SEND CONFIRMATION` and verify Email 2 includes the two matching timestamps and lyrics.
+8. Confirm a second click does not send Email 2 again. Only after all checks pass should the production frontend be published with registration enabled.
 
 Production Web app endpoint: `https://script.google.com/macros/s/AKfycbxEh-L38sjD66KwEYQ2FQGfNxNWz1dCW1lOXsJrhMHqF14liStlugPhHn2tETuigCD6/exec`
 
