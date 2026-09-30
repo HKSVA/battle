@@ -7,7 +7,14 @@ function hash_(s){return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_2
 function locked_(fn){const l=LockService.getScriptLock();if(!l.tryLock(25000))fail_('BUSY','系統忙碌，請稍後重試。');try{return fn();}finally{l.releaseLock();}}
 function open_(){const c=cfg_();if(c.REGISTRATION_ENABLED!=='true'||!Number.isFinite(Date.parse(c.OPEN_AT))||Date.now()<Date.parse(c.OPEN_AT))fail_('CLOSED','暫時未能接受報名，請稍後再試。');}
 function json_(v){return ContentService.createTextOutput(JSON.stringify(v)).setMimeType(ContentService.MimeType.JSON);}
-function response_(fn){try{return json_({ok:true,...fn()});}catch(e){return json_({ok:false,code:e.code||'SERVICE_ERROR',message:e.code?e.message:'未能完成操作，請稍後重試或聯絡主辦單位。'});}}
+function response_(fn){
+ try{return json_({ok:true,...fn()});}
+ catch(e){
+  console.error(e&&e.stack?e.stack:e);
+  const quota=/storage quota|storage limit|exceeded.*storage|空間|儲存空間/i.test(String(e&&e.message||e));
+  return json_({ok:false,code:e.code||(quota?'STORAGE_FULL':'SERVICE_ERROR'),message:e.code?e.message:(quota?'報名檔案暫時無法儲存，主辦帳戶的 Google Drive 空間已滿。請聯絡主辦單位。':'未能完成操作，請稍後重試或聯絡主辦單位。')});
+ }
+}
 function doGet(){return response_(()=>{open_();return {sessions:availability_(rows_(sheet_()))};});}
 function doPost(e){return response_(()=>{open_();const raw=e&&e.postData&&e.postData.contents;if(!raw||raw.length>30*1024*1024)fail_('INVALID','提交資料過大。');let d;try{d=JSON.parse(raw);}catch(_){fail_('INVALID','提交格式不正確。');}if(d.action==='register')return register_(d);if(d.action==='complete')return complete_(d);fail_('INVALID','不支援的操作。');});}
 function blob_(f,allowed,label){
