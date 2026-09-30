@@ -10,9 +10,11 @@ function json_(v){return ContentService.createTextOutput(JSON.stringify(v)).setM
 function response_(fn){
  try{return json_({ok:true,...fn()});}
  catch(e){
-  console.error(e&&e.stack?e.stack:e);
-  const quota=/storage quota|storage limit|exceeded.*storage|空間|儲存空間/i.test(String(e&&e.message||e));
-  return json_({ok:false,code:e.code||(quota?'STORAGE_FULL':'SERVICE_ERROR'),message:e.code?e.message:(quota?'報名檔案暫時無法儲存，主辦帳戶的 Google Drive 空間已滿。請聯絡主辦單位。':'未能完成操作，請稍後重試或聯絡主辦單位。')});
+  console.error(e&&e.stack||String(e));
+  if(e.code)return json_({ok:false,code:e.code,message:e.message});
+  const message=String(e&&e.message||e);
+  if(/storage quota|storage limit|exceeded.*storage|空間|儲存空間/i.test(message))return json_({ok:false,code:'STORAGE_FULL',message:'報名檔案暫時無法儲存，主辦帳戶的 Google Drive 空間已滿。請聯絡主辦單位。'});
+  return json_({ok:false,code:'SERVICE_ERROR',message:'未能完成操作，請稍後重試或聯絡主辦單位。'});
  }
 }
 function doGet(){return response_(()=>{open_();return {sessions:availability_(rows_(sheet_()))};});}
