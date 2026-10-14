@@ -10,12 +10,14 @@ window.CPB_LIMITED_RELEASE = Object.freeze({
       baselineBackendRemaining: 14,
       open: true},
     "18 OCT · 1:00–4:00PM": { originalCapacity: 40, existingRegistrations: 12, initialExtraSlots: 5, releaseLimit: 17, baselineBackendRemaining: 27, open: true },
-      "18 OCT · 6:00–9:00PM": { originalCapacity: 40,
-      existingRegistrations: 19,
-      initialExtraSlots: 7,
-      releaseLimit: 26,
-      baselineBackendRemaining: 19,
-      open: true},
+    "18 OCT · 6:00–9:00PM": {
+      originalCapacity: 40,
+      existingRegistrations: 30,
+      initialExtraSlots: 1,
+      releaseLimit: 31,
+      baselineBackendRemaining: 10,
+      open: true
+    },
     "19 OCT · 1:00–4:00PM": { originalCapacity: 40, existingRegistrations: 24, initialExtraSlots: 2, releaseLimit: 26, baselineBackendRemaining: 16, open: true },
     "19 OCT · 6:00–9:00PM": { originalCapacity: 40, existingRegistrations: 19, initialExtraSlots: 7, releaseLimit: 26, baselineBackendRemaining: 19, open: true }
   })
