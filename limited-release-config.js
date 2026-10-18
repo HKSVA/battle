@@ -28,8 +28,8 @@ window.CPB_LIMITED_RELEASE = Object.freeze({
     "18 OCT · 6:00–9:00PM": {
       originalCapacity: 40,
       existingRegistrations: 29,
-      initialExtraSlots: 3,
-      releaseLimit: 32,
+      initialExtraSlots: 0,
+      releaseLimit: 29,
       baselineBackendRemaining: 11,
       open: true
     },
