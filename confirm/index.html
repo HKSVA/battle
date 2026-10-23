@@ -56,6 +56,14 @@
         <button type="button" class="text-button" id="logout">登出</button>
       </div>
 
+      <aside class="mmo-download" aria-labelledby="mmo-download-title">
+        <div>
+          <p class="kicker">ROUND 02 · MMO DOWNLOAD</p>
+          <h2 id="mmo-download-title">11個命題演繹＋20首歌曲選擇下載網址：</h2>
+        </div>
+        <a class="button primary" href="https://drive.google.com/drive/folders/1p6mR-O41m2wG7_IaBqMRwXhQfIrxoDxx?usp=sharing" target="_blank" rel="noopener noreferrer">開啟 MMO LIST 及歌曲資料 <b>↗</b></a>
+      </aside>
+
       <form id="confirmation-form" novalidate>
         <section class="form-section" aria-labelledby="workshop-title">
           <div class="section-number">02A</div>
@@ -72,7 +80,7 @@
                 <label class="choice"><input type="radio" name="workshop" value="UNAVAILABLE"><span><b>UNAVAILABLE</b><em>兩日均無法出席</em></span></label>
               </div>
             </fieldset>
-            <p class="note">選擇「兩日均可」代表可接受其中一日安排，不代表需出席兩日。最終課堂日期由大會確認。</p>
+            <p class="note">選擇「兩日均可」代表可接受其中一日安排，不代表需出席兩日。最終課堂日期由大會於7 NOV確認。</p>
           </div>
         </section>
 
@@ -91,7 +99,7 @@
                 <label class="choice"><input type="radio" name="qualifying" value="UNAVAILABLE"><span><b>UNAVAILABLE</b><em>兩個時段均無法出席</em></span></label>
               </div>
             </fieldset>
-            <p class="note">以上為選手可出席時段，包含報到及準備安排，並不代表正式上台時間。最終比賽分組及報到時間將由大會另行通知。</p>
+            <p class="note">以上為選手可出席時段，包含報到、評審分享及準備安排，並不代表正式上台時間。最終比賽分組及報到時間由大會於7 NOV確認。</p>
           </div>
         </section>
 
@@ -123,18 +131,18 @@
             <label class="choice"><input type="radio" name="camForYouConsent" value="YES" required><span><b>願意</b><em>我同意提供電郵地址</em></span></label>
             <label class="choice"><input type="radio" name="camForYouConsent" value="NO"><span><b>暫不同意</b><em>不提供電郵地址</em></span></label>
           </div>
-          <p class="note">HK$1,000 禮物卡將以 Credit 形式發送至閣下登記電郵地址。此選項與市場推廣訂閱無關；未同意者將標註為待跟進，不會被視為放棄禮物卡。</p>
+          <p class="note">HK$1,000 禮物卡將以 Credit 形式發送至閣下登記電郵地址。此選項與市場推廣訂閱無關；未同意者將視為放棄禮物卡。</p>
         </section>
 
         <section class="consent-section" aria-labelledby="cplus-title">
           <p class="kicker">C_PLUS_MUSIC · FILMING INTEREST</p>
           <h2 id="cplus-title">音樂平台拍攝意向</h2>
-          <p>我願意參與 c_plus_music 音樂平台拍攝，分享我的歌唱及音樂成長故事。</p>
+          <p>我願意參與 c_plus_music 音樂平台拍攝，分享我的歌唱及備戰過程。</p>
           <div class="choice-grid">
             <label class="choice"><input type="radio" name="cPlusMusicFilmingConsent" value="YES" required><span><b>願意接受拍攝安排</b><em>由大會跟進詳情</em></span></label>
             <label class="choice"><input type="radio" name="cPlusMusicFilmingConsent" value="NO"><span><b>暫不參與拍攝</b><em>本次不登記拍攝意向</em></span></label>
           </div>
-          <p class="note">拍攝日期及詳情將由大會透過 WhatsApp 通知。你的電話不會因本選項而提供予外部合作夥伴；正式拍攝前將另行處理所需授權。</p>
+          <p class="note">拍攝內容會於 Instagram、YouTube 及 PORTAL 總決賽播放，拍攝日期及內容詳情將由大會透過 WhatsApp 通知。</p>
         </section>
 
         <div class="form-actions">
@@ -148,7 +156,7 @@
       <p class="kicker">REVIEW YOUR RESPONSE</p>
       <h2 id="review-title">提交前請檢查四項選擇</h2>
       <div class="summary" id="review-summary"></div>
-      <p class="note">提交後仍可使用相同 Registration ID 及已登記電話重新登入修改。</p>
+      <p class="note">提交後仍可使用相同 Registration ID 及已登記電話重新登入修改，最後修改日期為 31 Oct 2026，以便大會安排出席人數及場次。</p>
       <div class="button-row"><button class="button secondary" id="back-to-form" type="button">返回修改</button><button class="button primary" id="submit-confirmation" type="button">SUBMIT CONFIRMATION</button></div>
       <p class="status" id="submit-status" role="status" aria-live="polite"></p>
     </section>
@@ -159,6 +167,7 @@
       <h2 id="success-title">已收到你的出席意向及合作夥伴安排回覆。</h2>
       <div class="summary" id="success-summary"></div>
       <p class="note">以上並非最終編排，課堂及比賽時間將由大會確認。</p>
+      <p class="note">提交後仍可使用相同 Registration ID 及已登記電話重新登入修改，最後修改日期為 31 Oct 2026，以便大會安排出席人數及場次。</p>
       <p class="updated-at" id="updated-at"></p>
       <div class="button-row"><button class="button secondary" id="edit-response" type="button">修改回覆</button><button class="button ghost" id="success-logout" type="button">完成並登出</button></div>
     </section>
