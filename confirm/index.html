@@ -56,6 +56,18 @@
         <button type="button" class="text-button" id="logout">登出</button>
       </div>
 
+      <section class="assignment-panel" aria-labelledby="assignment-title">
+        <div>
+          <p class="kicker">YOUR ASSIGNED SESSIONS</p>
+          <h2 id="assignment-title">你的課堂及資格賽安排</h2>
+          <p>請依照以下大會編排準時出席。若顯示「尚待大會編排」，請稍後以相同資料重新登入查看。</p>
+        </div>
+        <div class="assignment-grid">
+          <article><small>GUDDY 備戰聲樂課</small><strong id="assigned-workshop">尚待大會編排</strong><span>新蒲崗五芳街33號永顯工廈4E1</span></article>
+          <article><small>21 NOV · QUALIFYING ROUND</small><strong id="assigned-qualifying">尚待大會編排</strong><span>PARSONS HALL｜銅鑼灣時代廣場9樓半</span></article>
+        </div>
+      </section>
+
       <aside class="mmo-download" aria-labelledby="mmo-download-title">
         <div>
           <p class="kicker">ROUND 02 · MMO DOWNLOAD</p>
@@ -63,6 +75,51 @@
         </div>
         <a class="button primary" href="https://drive.google.com/drive/folders/1p6mR-O41m2wG7_IaBqMRwXhQfIrxoDxx?usp=sharing" target="_blank" rel="noopener noreferrer">開啟 MMO LIST 及歌曲資料 <b>↗</b></a>
       </aside>
+
+      <section class="performance-panel" aria-labelledby="performance-title">
+        <div class="performance-intro">
+          <p class="kicker">SONG &amp; 2-MINUTE MMO SUBMISSION</p>
+          <h2 id="performance-title">提交參賽歌曲及2分鐘 MMO</h2>
+          <p>請選擇一首指定歌曲，並於 <strong>13 NOV 2026 · 11:59PM HKT</strong> 前上載已剪接的2分鐘 MP3。參賽者可自行轉調或剪輯伴奏，但不可擅自添加背景音樂或和音。</p>
+        </div>
+        <form id="performance-form" novalidate>
+          <label>
+            <span>揀選歌曲｜20 SONGS</span>
+            <select id="performance-song" name="songTitle" required>
+              <option value="">請選擇歌曲</option>
+              <optgroup label="01｜細緻流行">
+                <option value="破曉">破曉 — 林憶蓮</option><option value="野孩子">野孩子 — 楊千嬅</option><option value="勁浪漫 超溫馨">勁浪漫 超溫馨 — Gareth Tong</option><option value="最佳損友">最佳損友 — 陳奕迅</option><option value="要還">要還 — Constance</option>
+                <option value="笑忘書">笑忘書 — 張敬軒</option><option value="浸浴">浸浴 — 葉巧琳</option><option value="It's Okay to be Sad">It's Okay to be Sad — 衛蘭</option><option value="高山低谷">高山低谷 — 林奕匡</option><option value="暗湧">暗湧 — 王菲</option>
+              </optgroup>
+              <optgroup label="02｜力量流行">
+                <option value="下流社會">下流社會 — 陳蕾</option><option value="如何掉眼淚">如何掉眼淚 — 鄭秀文</option><option value="樹木真美">樹木真美 — Serrini</option><option value="時光機">時光機 — 小肥</option><option value="綻放">綻放 — 劉浩龍</option>
+                <option value="刀槍不入">刀槍不入 — 盧巧音</option><option value="遠征">遠征 — Dear Jane</option><option value="非愛不可">非愛不可 — 關淑怡</option><option value="冷雨夜">冷雨夜 — Beyond</option><option value="記憶棉">記憶棉 — MC</option>
+              </optgroup>
+            </select>
+          </label>
+          <label>
+            <span>17 NOV c_plus_music 拍攝意願</span>
+            <select id="filming-17nov" name="filming17NovInterest" required>
+              <option value="">請選擇 Yes／No</option>
+              <option value="YES">Yes｜願意參與</option>
+              <option value="NO">No｜未能參與</option>
+            </select>
+          </label>
+          <div class="filming-note">
+            <strong>17 NOV · 6:00–10:00PM 其中一小時</strong>
+            <span>地點：新蒲崗｜名額：5名</span>
+            <p>選擇 Yes 只代表有意參與，不代表已獲安排。大會將抽出5位參加者，並於11月10日前透過 WhatsApp 聯絡。</p>
+          </div>
+          <label class="file-field">
+            <span>上載2分鐘 MMO MP3</span>
+            <input id="performance-file" name="performanceFile" type="file" accept=".mp3,audio/mpeg,audio/mp3">
+            <small>只接受 MP3，檔案上限10 MB。首次提交必須上載；如更改歌曲，亦須重新上載對應檔案。</small>
+          </label>
+          <div class="upload-state" id="performance-upload-state" aria-live="polite">尚未提交歌曲及 MP3。</div>
+          <button class="button primary" id="performance-submit" type="submit">提交歌曲及 MP3 <b>→</b></button>
+          <p class="status" id="performance-status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
 
       <form id="confirmation-form" novalidate>
         <section class="form-section" aria-labelledby="workshop-title">
