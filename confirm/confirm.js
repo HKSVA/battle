@@ -7,8 +7,8 @@
     workshop: {'14 NOV':'14 NOV｜5:00–7:00 PM','15 NOV':'15 NOV｜5:00–7:00 PM','BOTH':'BOTH DATES OK｜兩日均可，由大會安排','UNAVAILABLE':'UNAVAILABLE｜兩日均無法出席'},
     qualifying: {'SESSION A':'SESSION A｜2:00–4:30 PM','SESSION B':'SESSION B｜4:30–7:30 PM','BOTH':'BOTH SESSIONS OK｜兩個時段均可，由大會安排','UNAVAILABLE':'UNAVAILABLE｜兩個時段均無法出席'},
     consent: {YES:'願意／同意',NO:'暫不同意／不參與'},
-    workshopAssigned: {'14 NOV 5PM':'14 NOV · 5:00PM','15 NOV 5PM':'15 NOV · 5:00PM','15 NOV 6PM':'15 NOV · 6:00PM','14 NOV':'14 NOV · 5:00PM','15 NOV':'15 NOV · 請留意大會通知','UNAVAILABLE':'未能安排'},
-    qualifyingAssigned: {'SESSION A':'SESSION A · 2:00–4:30PM','SESSION B':'SESSION B · 4:30–7:30PM','UNAVAILABLE':'未能安排'}
+    workshopAssigned: {'14 NOV 5PM':'14 NOV · 5:00PM','15 NOV 5PM':'15 NOV · 5:00PM','15 NOV 6PM':'15 NOV · 6:00PM','14 NOV':'14 NOV · 5:00PM','15 NOV':'15 NOV · 請留意大會通知','UNAVAILABLE':'未能出席'},
+    qualifyingAssigned: {'SESSION A':'SESSION A · 2:00–4:30PM','SESSION B':'SESSION B · 4:30–7:30PM','UNAVAILABLE':'未能出席'}
   };
 
   function setStatus(element, message, success = false) {
@@ -54,9 +54,21 @@
   }
   function escapeHtml(value) { const node = document.createElement('span');node.textContent = String(value);return node.innerHTML; }
   function updateRemarksCount() { $('#remarks-count').textContent = Array.from($('#special-remarks').value).length; }
+  function normalizeWorkshopAssignment(value) {
+    const raw=String(value||'').trim();
+    if(!raw||labels.workshopAssigned[raw])return raw;
+    const parsed=new Date(raw);
+    if(!Number.isNaN(parsed.getTime())){
+      const parts=Object.fromEntries(new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Hong_Kong',day:'numeric',month:'short',hour:'numeric',minute:'2-digit',hour12:true}).formatToParts(parsed).map(part=>[part.type,part.value]));
+      const minute=parts.minute==='00'?'':`:${parts.minute}`;
+      return `${Number(parts.day)} ${String(parts.month).toUpperCase()} ${parts.hour}${minute}${String(parts.dayPeriod).toUpperCase()}`;
+    }
+    return raw.toUpperCase().replace(/\s+/g,' ');
+  }
   function showAssignments(assignments) {
     const current=assignments||{};
-    $('#assigned-workshop').textContent=labels.workshopAssigned[current.workshop]||'尚待大會編排';
+    const workshop=normalizeWorkshopAssignment(current.workshop);
+    $('#assigned-workshop').textContent=labels.workshopAssigned[workshop]||'尚待大會編排';
     $('#assigned-qualifying').textContent=labels.qualifyingAssigned[current.qualifying]||'尚待大會編排';
   }
   function fillPerformance(performance) {
